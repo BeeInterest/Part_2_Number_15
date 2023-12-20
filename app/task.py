@@ -1,4 +1,6 @@
 import sqlite3
+
+print('Скоро выведется самый младший и самый старший студент')
 try:
     conn = sqlite3.connect('../db/exams.db')
     cursor = conn.cursor()
