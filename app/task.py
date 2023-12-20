@@ -2,11 +2,11 @@ import sys
 import requests
 import time
 
-print('Приложение ожидает запуска Flask')
-time.sleep(30)
+
+time.sleep(15)
 
 
-url = "http://127.0.0.1:5000"
+url = "http://0.0.0.0:5000"
 try:
     number_students = sys.argv[1]
 except:
