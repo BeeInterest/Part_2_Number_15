@@ -24,9 +24,10 @@ jobs:
       run: |
         pip install mimesis
         pip install faker
+        pip install flask
 
     - name: Build DB
-      run: python db/create_and_edit_db.py
+      run: python create_and_edit_db.py
 
   young_old_student:
     needs: exams_db
