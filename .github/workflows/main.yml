@@ -13,16 +13,24 @@ jobs:
     strategy:
       matrix:
         amount_student: [32]
+    
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Build and Test DB
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
+
+    - name: Install dependencies
       run: |
         pip install mimesis
         pip install faker
-        python ./db/create_and_edit_db.py ${{ matrix.amount_student }}
-    
+
+    - name: Build and Test DB
+      run: python ./db/create_and_edit_db.py ${{ matrix.amount_student }}
+
   build:
     runs-on: ubuntu-latest
 
@@ -30,8 +38,10 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
+
     - name: Build and Test App
-      run: |
-        echo "START_TIME=$(date)"
-        python ./app/task.py
-        echo "END_TIME=$(date)"
+      run: python ./app/task.py
