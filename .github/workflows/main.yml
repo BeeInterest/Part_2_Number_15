@@ -1,0 +1,32 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  test_db:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Build and Test DB
+      run: |
+        docker build -t your-db-image -f ./db/Dockerfile .
+        docker run -t your-db-image python ./db/create_and_edit_db.py 
+    
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Build and Test App
+      run: |
+        docker build -t your-app-image -f ./app/Dockerfile .
+        docker run -t your-app-image python ./app/task.py 
