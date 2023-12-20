@@ -32,4 +32,6 @@ jobs:
 
     - name: Build and Test App
       run: |
-        python ./app/task.py 
+        echo "START_TIME=$(date)"
+        python ./app/task.py
+        echo "END_TIME=$(date)"
