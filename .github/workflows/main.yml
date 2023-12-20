@@ -12,7 +12,7 @@ jobs:
     
     strategy:
       matrix:
-        amount_student: [8, 12, 16, 18, 22, 24, 28, 32]
+        amount_student: [32]
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2

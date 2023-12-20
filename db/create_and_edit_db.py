@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS record_books (
 db = DB()
 db.create_table()
 if len(sys.argv) > 1:
-    db.fill_table(number_students=sys.argv[1])
+    db.fill_table(number_students=int(sys.argv[1]))
 
 # db.fill_table()
 
