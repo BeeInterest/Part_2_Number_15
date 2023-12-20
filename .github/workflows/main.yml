@@ -19,6 +19,8 @@ jobs:
 
     - name: Build and Test DB
       run: |
+        pip install mimesis
+        pip install faker
         python ./db/create_and_edit_db.py ${{ matrix.amount_student }}
     
   build:
