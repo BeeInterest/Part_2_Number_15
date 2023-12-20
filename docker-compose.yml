@@ -1,0 +1,18 @@
+version: '3'
+services:
+  flask_app:
+    build: ./db
+    ports:
+      - "5000:5000"
+    networks:
+      - my_network
+
+  task_app:
+    build: ./app 
+    depends_on:
+      - flask_app
+    networks:
+      - my_network
+
+networks:
+  my_network:

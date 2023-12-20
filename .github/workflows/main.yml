@@ -15,12 +15,6 @@ jobs:
     
     steps:
 
-    - uses: akhileshns/heroku-deploy@v3.12.12 #
-        with:
-          heroku_api_key: put-the-api-key-you-copied-ealier
-          heroku_app_name: khabdrick-todo-101
-          heroku_email: yoursignupemail@gmail.com
-          
     - name: Checkout Repository
       uses: actions/checkout@v2
 
@@ -28,6 +22,12 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.x
+
+    - name: Set up Docker
+      uses: docker/setup-docker@v2
+      with:
+        dockerfile: db/Dockerfile
+        context: .
 
     - name: Install dependencies
       run: |
@@ -49,6 +49,12 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
+    - name: Set up Docker
+      uses: docker/setup-docker@v2
+      with:
+        dockerfile: app/Dockerfile 
+        context: .
+
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
@@ -57,6 +63,11 @@ jobs:
     - name: Install dependencies
       run: |
         pip install requests
+    
+     - name: Build and run Docker containers
+      run: |
+        docker-compose build
+        docker-compose up -d
 
-    - name: Build App
-      run: python ./app/task.py ${{ matrix.amount_student }}
+     - name: Build AppRun task.py with argument
+      run: docker exec -it $(docker-compose ps -q task_app) python task.py ${{ matrix.amount_student }}
