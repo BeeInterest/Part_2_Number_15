@@ -1,4 +1,5 @@
 import sqlite3
+import sys
 import mimesis
 import random
 from faker import Faker
@@ -48,13 +49,13 @@ CREATE TABLE IF NOT EXISTS record_books (
 )
 ''')
         self.conn.commit()
+        print('Таблицы subjects_book и record_books созданы')
     
     def fill_table(self,number_students=20):
         for i in range(number_students):
             full_name = self.person.full_name()
             birth_date = self.calculate_age()
             book_id = i
-            name_columns = (column for column in name_columns)
             self.cursor.execute(f'''
                         INSERT INTO  record_books
                         (book_id,full_name,birth_date)
@@ -69,3 +70,11 @@ CREATE TABLE IF NOT EXISTS record_books (
                             (subject_name,book_id,full_name_teacher,date_exam)
                             VALUES ('{subject_name}',{book_id},'{full_name_teacher}','{str(date_exam)[:10]}');''')
         self.conn.commit()
+        print('Таблицы subjects_book и record_books заполнены')
+
+db = DB()
+db.create_table()
+if len(sys.argv) > 1:
+    db.fill_table(number_students=sys.argv[1])
+# db.fill_table()
+
