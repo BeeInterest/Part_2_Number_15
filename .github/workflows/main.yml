@@ -44,6 +44,6 @@ jobs:
         python-version: 3.x
 
     - name: Build and Test App
-      run: 
+      run: |
       set -x
       python ./app/task.py
