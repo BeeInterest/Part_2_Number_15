@@ -23,21 +23,13 @@ jobs:
       with:
         python-version: 3.x
 
-    - name: Set up Docker
-      uses: docker/setup-docker@v2
-      with:
-        dockerfile: db/Dockerfile
-        context: .
-
-    - name: Install dependencies
+    - name: Build and run Docker containers
       run: |
-        pip install mimesis
-        pip install faker
-        pip install flask
-
+        docker-compose build
+        docker-compose up -d
 
     - name: Build DB
-      run: docker build -t func_db .
+      run: docker exec -it $(docker-compose ps -q db_app) python func_db.py
 
   young_old_student:
     runs-on: ubuntu-latest
@@ -49,25 +41,16 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Set up Docker
-      uses: docker/setup-docker@v2
-      with:
-        dockerfile: app/Dockerfile 
-        context: .
 
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
         python-version: 3.x
-
-    - name: Install dependencies
-      run: |
-        pip install requests
     
      - name: Build and run Docker containers
       run: |
         docker-compose build
         docker-compose up -d
 
-     - name: Build AppRun task.py with argument
+     - name: Build App
       run: docker exec -it $(docker-compose ps -q task_app) python task.py ${{ matrix.amount_student }}
