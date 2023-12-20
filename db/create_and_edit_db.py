@@ -77,6 +77,8 @@ db = DB()
 db.create_table()
 if len(sys.argv) > 1:
     db.fill_table(number_students=int(sys.argv[1]))
+else:
+    db.fill_table()
 
 # db.fill_table()
 
