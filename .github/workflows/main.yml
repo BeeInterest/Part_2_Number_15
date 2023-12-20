@@ -52,3 +52,26 @@ jobs:
 
     - name: Build App
       run: python ./app/task.py ${{ matrix.amount_student }}
+
+  deploy_flask:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        amount_student: [8,10,12,14,16,18,20,24,28,31]
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
+
+    - name: Install dependencies
+      run: |
+        pip install requests
+
+    - name: Build App
+      run: python ./db/func_db.py
+      run: python ./app/task.py ${{ matrix.amount_student }}

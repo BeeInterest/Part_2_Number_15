@@ -3,7 +3,7 @@ import requests
 import time
 
 print('Приложение ожидает запуска Flask')
-time.sleep(60)
+time.sleep(30)
 
 
 url = "http://127.0.0.1:5000"
