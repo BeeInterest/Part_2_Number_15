@@ -30,12 +30,11 @@ jobs:
       run: python ./db/func_db.py
 
   young_old_student:
-    needs: exams_db
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        amount_student: [32]
+        amount_student: [8,10,12,14,16,18,20,24,28,31]
 
     steps:
     - name: Checkout Repository
