@@ -19,8 +19,7 @@ jobs:
 
     - name: Build and Test DB
       run: |
-        docker build -t your-db-image -f ./db/Dockerfile .
-        docker run -t your-db-image python ./db/create_and_edit_db.py ${{ matrix.amount_student }}
+        python ./db/create_and_edit_db.py ${{ matrix.amount_student }}
     
   build:
     runs-on: ubuntu-latest
@@ -31,5 +30,4 @@ jobs:
 
     - name: Build and Test App
       run: |
-        docker build -t your-app-image -f ./app/Dockerfile .
-        docker run -t your-app-image python task.py 
+        python ./app/task.py 
