@@ -1,9 +1,9 @@
 import sqlite3
 
-conn = sqlite3.connect('../db/exams.db')
-cursor = conn.cursor()
 while True:
     try:
+        conn = sqlite3.connect('../db/exams.db')
+        cursor = conn.cursor()
         cursor.execute(f'''
         SELECT full_name, birth_date
         FROM record_books
