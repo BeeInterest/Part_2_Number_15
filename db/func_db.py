@@ -119,6 +119,6 @@ def young_old_student():
     result = db.young_old_student()
     return json.dumps({'message':result})
 
-app.run(host='0.0.0.0', port=5000,debug=True)
+app.run(debug=True)
 
 
