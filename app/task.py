@@ -32,4 +32,5 @@ while True:
             print(f"Молодой студент: {student}")
     
     if students:
+        conn.close()
         break
