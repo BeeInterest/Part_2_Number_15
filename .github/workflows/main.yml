@@ -71,6 +71,9 @@ jobs:
     - name: Install dependencies
       run: |
         pip install requests
+        pip install mimesis
+        pip install faker
+        pip install flask
 
     - name: Build App
       run: |
