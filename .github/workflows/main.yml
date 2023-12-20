@@ -45,5 +45,9 @@ jobs:
       with:
         python-version: 3.x
 
+    - name: Install dependencies
+      run: |
+        pip install requests
+
     - name: Build App
       run: python ./app/task.py ${{ matrix.amount_student }}
