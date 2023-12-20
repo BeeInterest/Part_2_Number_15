@@ -32,6 +32,7 @@ jobs:
       run: python ./db/create_and_edit_db.py ${{ matrix.amount_student }}
 
   build:
+    needs: test_db
     runs-on: ubuntu-latest
 
     steps:
