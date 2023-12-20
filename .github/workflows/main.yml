@@ -7,12 +7,9 @@ on:
 
 jobs:
 
-  test_db:
+  exams_db:
     runs-on: ubuntu-latest
     
-    strategy:
-      matrix:
-        amount_student: [32]
     
     steps:
     - name: Checkout Repository
@@ -28,12 +25,16 @@ jobs:
         pip install mimesis
         pip install faker
 
-    - name: Build and Test DB
-      run: python ./db/create_and_edit_db.py ${{ matrix.amount_student }}
+    - name: Build DB
+      run: python ./db/create_and_edit_db.py
 
-  build:
-    needs: test_db
+  young_old_student:
+    needs: exams_db
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        amount_student: [32]
 
     steps:
     - name: Checkout Repository
@@ -44,7 +45,5 @@ jobs:
       with:
         python-version: 3.x
 
-    - name: Build and Test App
-      run: |
-        set -x
-        python ./app/task.py
+    - name: Build App
+      run: python ./app/task.py ${{ matrix.amount_student }}

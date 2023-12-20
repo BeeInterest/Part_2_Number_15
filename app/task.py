@@ -1,31 +1,46 @@
 import sqlite3
+import sys
+import requests
 
-print('Скоро выведется самый младший и самый старший студент')
+
+url = "http://127.0.0.1:5000"
 try:
-    conn = sqlite3.connect('../db/exams.db')
-    cursor = conn.cursor()
-except Exception as e:
-    print(str(e))
-try:
-    cursor.execute(f'''
-    SELECT full_name, birth_date
-    FROM record_books
-    ORDER BY strftime('%Y', birth_date) DESC,
-            strftime('%m', birth_date) DESC,
-            strftime('%d', birth_date) DESC''')
-    
-    students = cursor.fetchall()
-    cursor.execute('''DROP TABLE record_books;''')
-    cursor.execute('''DROP TABLE subjects_book; ''')
-    conn.close()
-    birth1 = students[0][1]
-    birth2 = students[-1][1]
-    young = max(birth1,birth2)
-    old = min(birth1,birth2)
-    for student in students:
-        if student[1] == old:
-            print(f"Старший студент: {student}")
-        elif student[1] == young:
-            print(f"Молодой студент: {student}")
+    number_students = sys.argv[1]
 except:
-    print('Увы и ах')
+    number_students = 20
+
+url1 = f"{url}/create_table" 
+url2 = f"{url}/fill_table/{number_students}"
+url3 = f"{url}/young_old_student"
+
+try:
+    response1 = requests.get(url1)
+    response1.raise_for_status()  
+
+    data = response1.json()  
+    print(data['message'])
+except requests.exceptions.RequestException as e:
+    print(f"Error: {e}")
+
+
+try:
+    response2 = requests.get(url2)
+    response2.raise_for_status()  
+
+    data = response2.json()  
+    print(data['message'])
+
+except requests.exceptions.RequestException as e:
+    print(f"Error: {e}")
+
+try:
+    response3 = requests.get(url3)
+    response3.raise_for_status() 
+
+    data = response3.json() 
+    print(data['message'])
+
+except requests.exceptions.RequestException as e:
+    print(f"Error: {e}")
+
+

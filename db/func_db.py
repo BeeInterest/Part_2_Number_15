@@ -1,3 +1,5 @@
+import json
+from os import name
 import sqlite3
 import sys
 import mimesis
@@ -13,7 +15,7 @@ class DB:
             'Администрирование баз данных',
             'Алгоритмы параллельных вычислений',
             'Введение в машинное обучение']
-        self.conn = sqlite3.connect('exams.db')
+        self.conn = sqlite3.connect('exams.db',check_same_thread=False)
         self.faker = Faker('ru_RU')
         self.person = mimesis.Person('ru')
         self.gen = mimesis.Generic('ru')
@@ -71,14 +73,52 @@ CREATE TABLE IF NOT EXISTS record_books (
                             VALUES ('{subject_name}',{book_id},'{full_name_teacher}','{str(date_exam)[:10]}');''')
         self.conn.commit()
         print('Таблицы subjects_book и record_books заполнены')
+    
+    def young_old_student(self):
+        self.cursor.execute(f'''
+    SELECT full_name, birth_date
+    FROM record_books
+    ORDER BY strftime('%Y', birth_date) DESC,
+            strftime('%m', birth_date) DESC,
+            strftime('%d', birth_date) DESC''')
+    
+        students = self.cursor.fetchall()
+        self.cursor.execute('''DROP TABLE record_books;''')
+        self.cursor.execute('''DROP TABLE subjects_book; ''')
         self.conn.close()
+        birth1 = students[0][1]
+        birth2 = students[-1][1]
+        young = max(birth1,birth2)
+        old = min(birth1,birth2)
+        res = ''
+        for student in students:
+            if student[1] == old:
+                res += f"   Старший студент: {student}"
+            elif student[1] == young:
+                res += f"   Молодой студент: {student}"
+        return res
+    
 
+from flask import Flask, jsonify
+
+app = Flask(__name__)
 db = DB()
-db.create_table()
-if len(sys.argv) > 1:
-    db.fill_table(number_students=int(sys.argv[1]))
-else:
-    db.fill_table()
 
-# db.fill_table()
+@app.route('/create_table')
+def create_table():
+    db.create_table()
+    return json.dumps({'message':'Таблицы subjects_book и record_books созданы'})
+
+@app.route('/fill_table/<int:number_students>')
+def fill_table(number_students):
+    db.fill_table(number_students)
+    return json.dumps({'message':'Таблицы subjects_book и record_books заполнены'})
+
+@app.route('/young_old_student')
+def young_old_student():
+    result = db.young_old_student()
+    return json.dumps({'message':result})
+
+app.run(host='0.0.0.0', port=5000,debug=True)
+
 
