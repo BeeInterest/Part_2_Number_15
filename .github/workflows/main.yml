@@ -17,7 +17,7 @@ jobs:
     - name: Build and Test DB
       run: |
         docker build -t your-db-image -f ./db/Dockerfile .
-        docker run -t your-db-image python create_and_edit_db.py 
+        docker run -t your-db-image python ./db/create_and_edit_db.py 
     
   build:
     runs-on: ubuntu-latest
