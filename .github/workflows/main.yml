@@ -9,7 +9,10 @@ jobs:
 
   test_db:
     runs-on: ubuntu-latest
-
+    
+    strategy:
+      matrix:
+        amount_student: [8, 12, 16, 18, 22, 24, 28, 32]
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
@@ -17,7 +20,7 @@ jobs:
     - name: Build and Test DB
       run: |
         docker build -t your-db-image -f ./db/Dockerfile .
-        docker run -t your-db-image python ./db/create_and_edit_db.py 
+        docker run -t your-db-image python ./db/create_and_edit_db.py ${{ matrix.amount_student }}
     
   build:
     runs-on: ubuntu-latest
