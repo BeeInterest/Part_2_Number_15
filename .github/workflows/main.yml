@@ -14,6 +14,13 @@ jobs:
       steps_completed: ${{ steps.completed }}
     
     steps:
+
+    - uses: akhileshns/heroku-deploy@v3.12.12 #
+        with:
+          heroku_api_key: put-the-api-key-you-copied-ealier
+          heroku_app_name: khabdrick-todo-101
+          heroku_email: yoursignupemail@gmail.com
+          
     - name: Checkout Repository
       uses: actions/checkout@v2
 
@@ -28,11 +35,6 @@ jobs:
         pip install faker
         pip install flask
 
-    - uses: akhileshns/heroku-deploy@v3.12.12 #
-        with:
-          heroku_api_key: put-the-api-key-you-copied-ealier
-          heroku_app_name: khabdrick-todo-101
-          heroku_email: yoursignupemail@gmail.com
 
     - name: Build DB
       run: python ./db/func_db.py
