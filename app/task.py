@@ -1,9 +1,11 @@
 import sqlite3
-
+try:
+    conn = sqlite3.connect('../db/exams.db')
+    cursor = conn.cursor()
+except Exception as e:
+    print(str(e))
 while True:
     try:
-        conn = sqlite3.connect('../db/exams.db')
-        cursor = conn.cursor()
         cursor.execute(f'''
         SELECT full_name, birth_date
         FROM record_books
