@@ -27,7 +27,7 @@ jobs:
         pip install flask
 
     - name: Build DB
-      run: python create_and_edit_db.py
+      run: python ./db/func_db.py
 
   young_old_student:
     needs: exams_db
